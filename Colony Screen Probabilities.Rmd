@@ -1,0 +1,94 @@
+---
+title: "Colony Screen Probabilities"
+author: "Myung Chang Lee (Noah Lee)"
+date: "3/4/2021"
+output: html_document
+---
+
+# Objective:
+This code is designed to output the probability of obtaining at least one of each barcode from a population of n barcodes when you screen m colonies.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+suppressPackageStartupMessages({
+  library("tidyverse")
+  library("ggplot2")
+  library("openxlsx")
+  library("reticulate")
+})
+
+```
+
+## First define Python function to generate strings (all possible picks)
+
+```{python probability function}
+
+def picks(m, n_max):
+  if m < n_max:
+    return [0 for i in range(n_max)]
+  
+  components = [str(i) for i in range(n_max)]
+  length = m
+
+  strings = components
+  new_strings = components
+
+  for i in range(length - 1):
+    new_strings = list()
+    for string in strings:
+      for component in components:
+        new_strings.append(string + " " + component)
+
+    strings = copy.deepcopy(new_strings)
+
+  count = 0
+
+  for string in strings:
+    if all(letter in string for letter in components):
+      count += 1
+
+  return count / len(strings)
+
+```
+
+
+
+
+
+
+```{python probability function}
+
+def probability(m, n_max):
+  if m < n_max:
+    return [0 for i in range(n_max)]
+  
+  components = [str(i) for i in range(n_max)]
+  length = m
+
+  strings = components
+  new_strings = components
+
+  for i in range(length - 1):
+    new_strings = list()
+    for string in strings:
+      for component in components:
+        new_strings.append(string + " " + component)
+
+    strings = copy.deepcopy(new_strings)
+
+  count = 0
+
+  for string in strings:
+    if all(letter in string for letter in components):
+      count += 1
+
+  return count / len(strings)
+
+```
+
+
+
+
+
